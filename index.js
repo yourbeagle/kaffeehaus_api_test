@@ -24,7 +24,8 @@ admin.initializeApp({
 });
 
 // Initialize Firestore instance
-const db = admin.firestore(); 
+const db = admin.firestore();
+db.settings({ ignoreUndefinedProperties: true })
 const usersCollection = db.collection('users');
 const preferensiCollection = db.collection('preferensi');
 
@@ -144,7 +145,7 @@ app.post('/login', async (req, res) => {
       const response = {
         success : true,
         message : "Login Successful",
-        LoginResult: {
+        loginResult: {
           id : userId,
           name : user.name,
           token : user.token
