@@ -212,6 +212,10 @@ app.get("/welcome", auth, (req, res) => {
   res.status(200).send("Welcome 🙌 ");
 });
 
+app.get("/", (req, res) => {
+  res.status(200).send("Welcome 🙌 ");
+});
+
 
 // Start the server on port 3000
 app.listen(3000, () => {
