@@ -6,7 +6,7 @@ const jwt = require("jsonwebtoken");
 const multer = require('multer');
 require("dotenv").config();
 const auth = require("./auth");
-
+const idForUser = uuidv4()
 
 const PORT = process.env.PORT || 3000;
 const app = express();
@@ -38,7 +38,7 @@ app.post('/register', async (req, res) => {
 
     // Create a new document with auto-generated ID and email attribute
     const newUser = {
-      id: uuidv4(),
+      id: idForUser,
       email: email,
       name: name,
       password: hashedPassword
@@ -54,7 +54,7 @@ app.post('/register', async (req, res) => {
 
     newUser.token = token
 
-    const docRef = await usersCollection.add(newUser);
+    const docRef = await usersCollection.doc(idForUser).set(newUser);
     const newUserId = docRef.id;
 
     const response = {
@@ -187,8 +187,12 @@ app.post('/preferensi', auth, async (req, res) => {
       userId
     };
 
+ 
+
+    const parentDoc = usersCollection.doc?.(userId)
+
     // Menyimpan preferensi ke koleksi "preferensi" di Firestore
-    const preferensiRef = await admin.firestore().collection('preferensi').add(preferensiData);
+    const preferensiRef = await parentDoc.collection("preferensi").add(preferensiData);
 
     // Respon ke pengguna dengan ID preferensi yang baru ditambahkan
 
