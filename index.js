@@ -170,21 +170,20 @@ app.post('/login', async (req, res) => {
 });
 
 // Endpoint untuk menambahkan preferensi
-app.post('/preferensi', async (req, res) => {
+app.post('/preferensi', auth, async (req, res) => {
   try {
     // Mendapatkan ID pengguna dari objek permintaan
     const userId = req.body.userId;
 
     // Mendapatkan data preferensi dari objek permintaan
-    const { harga, vibe, rating, lokasi, jenis } = req.body;
+    const { name , ambience, utils, view } = req.body;
 
     // Membuat objek preferensi baru
     const preferensiData = {
-      harga,
-      vibe,
-      rating,
-      lokasi,
-      jenis,
+      name,
+      ambience,
+      utils,
+      view,
       userId
     };
 
@@ -196,9 +195,13 @@ app.post('/preferensi', async (req, res) => {
     const response = {
       success : true,
       message : "Berhasil menambahkan preferensi",
-      PreferensiResult : {
+      preferensiResult : {
         preferensiId : preferensiRef.id,
-        ...preferensiData
+        name : name,
+        ambience : ambience,
+        utils : utils,
+        view : view,
+        userId : userId
       }
     }
 
