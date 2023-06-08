@@ -48,7 +48,7 @@ app.post('/register', async (req, res) => {
       { user_id: newUser.id, email },
       process.env.TOKEN_KEY,
       {
-        expiresIn: "2h",
+        expiresIn: "30d",
       }
     );
 
@@ -138,7 +138,7 @@ app.post('/login', async (req, res) => {
         { user_id: userId, email},
         process.env.TOKEN_KEY,
         {
-          expiresIn: "2h",
+          expiresIn: "30d",
         }
       );
 
