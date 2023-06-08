@@ -30,7 +30,7 @@ const usersCollection = db.collection('users');
 const preferensiCollection = db.collection('preferensi');
 
 // Add a new user to Firestore
-app.post('/users/register', async (req, res) => {
+app.post('/register', async (req, res) => {
   try {
     const { email, name, password } = req.body;
     const saltRounds = 10;
