@@ -192,7 +192,7 @@ app.post('/preferensi', auth, async (req, res) => {
     const parentDoc = usersCollection.doc?.(userId)
 
     // Menyimpan preferensi ke koleksi "preferensi" di Firestore
-    const preferensiRef = await parentDoc.collection("preferensi").add(preferensiData);
+    const preferensiRef = await parentDoc.collection("preferensi").doc().set(preferensiData);
 
     // Respon ke pengguna dengan ID preferensi yang baru ditambahkan
 
@@ -216,6 +216,22 @@ app.post('/preferensi', auth, async (req, res) => {
   }
 });
 
+app.get("/preferensi", auth, async (req, res) => {
+  
+  const userId = req.body.userId
+
+  const snapshotPreferensi = await usersCollection?.doc(userId).collection("preferensi").get()
+  const preferensiData = []
+
+  snapshotPreferensi.forEach(doc => {
+    const preferensi = doc.data()
+    preferensi.id = doc.id
+    preferensiData.push(preferensi)
+  })
+
+  res.status(200).json(preferensiData)
+
+})
 
 app.get("/welcome", auth, (req, res) => {
   res.status(200).send("Welcome 🙌 ");
