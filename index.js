@@ -216,20 +216,29 @@ app.post('/preferensi', auth, async (req, res) => {
   }
 });
 
-app.get("/preferensi", auth, async (req, res) => {
+app.post("/preferensiAll", auth, async (req, res) => {
+  try{
+    const userId = req.body.userId
   
-  const userId = req.body.userId
-
-  const snapshotPreferensi = await usersCollection?.doc(userId).collection("preferensi").get()
-  const preferensiData = []
-
-  snapshotPreferensi.forEach(doc => {
-    const preferensi = doc.data()
-    preferensi.id = doc.id
-    preferensiData.push(preferensi)
-  })
-
-  res.status(200).json(preferensiData)
+  
+    const snapshotPreferensi = await usersCollection?.doc(userId).collection("preferensi").get()
+    const preferensiData = []
+  
+    snapshotPreferensi.forEach(doc => {
+      const preferensi = doc.data()
+      preferensi.id = doc.id
+      preferensiData.push(preferensi)
+    })
+  
+    const response = {
+      success : true,
+      message : "Berhasil menampilkan seluruh preferensi",
+      preferensiData
+    }
+    res.status(200).json(response)
+  }catch(error){
+    return res.status(500).json({ error: 'Internal server error' });
+  }
 
 })
 
